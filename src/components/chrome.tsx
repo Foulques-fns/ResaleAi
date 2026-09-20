@@ -9,13 +9,9 @@ import { InstallButton, OnlinePill } from "./pwa";
 
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5">
-      <span className="relative grid size-9 place-items-center rounded-xl bg-acid text-ink">
-        <ScanBarcode className="size-5" strokeWidth={2.4} />
-      </span>
-      <span className="text-display text-lg font-bold tracking-tight">
-        Price<span className="text-acid">Snap</span>
-      </span>
+    <Link href="/" className="brand-logo-link" aria-label="ResaleAi">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="ResaleAi" className="brand-logo" />
     </Link>
   );
 }

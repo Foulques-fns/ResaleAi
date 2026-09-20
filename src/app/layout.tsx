@@ -11,18 +11,18 @@ const body = Inter({ subsets: ["latin"], variable: "--font-body-var", weight: ["
 
 export const metadata: Metadata = {
   title: {
-    default: "PriceSnap — Combien vaut votre objet ?",
-    template: "%s · PriceSnap",
+    default: "ResaleAi — Estimez vos objets",
+    template: "%s · ResaleAi",
   },
   description:
     "Photographiez un objet à revendre : identification par IA, recherche d'annonces comparables en direct sur le web, fourchette de prix réaliste et conseils de vente.",
-  applicationName: "PriceSnap",
-  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "PriceSnap" },
-  icons: { icon: "/icons/icon.png", apple: "/icons/icon.png" },
+  applicationName: "ResaleAi",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "ResaleAi" },
+  icons: { icon: "/logo.png", apple: "/logo.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0c0e",
+  themeColor: "#050812",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,

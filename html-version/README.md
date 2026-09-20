@@ -1,16 +1,5 @@
-# Version HTML / CSS / JavaScript
+# ResaleAi — HTML/CSS/JS
 
-Cette version conserve le projet Next.js original dans `src/` et ajoute une interface autonome dans ce dossier.
+Cette version conserve l'interface et l'accès caméra, mais les appels `/api/estimate` et `/api/history` nécessitent un backend Next.js accessible sur la même origine.
 
-- `index.html` : interface
-- `styles.css` : styles
-- `app.js` : logique de navigation, caméra, galerie, identification et estimation
-- `manifest.webmanifest` : PWA
-
-## Caméra
-Le bouton **Caméra** utilise `navigator.mediaDevices.getUserMedia()` et demande l'autorisation du navigateur. Sur téléphone, l'accès caméra nécessite HTTPS (ou localhost).
-
-## Backend
-Les appels `/api/estimate`, `/api/history` et `/api/barcode` sont conservés et utilisés par l'interface HTML. Pour garder les estimations IA et les recherches réelles, cette interface doit être servie avec le backend du projet.
-
-Le projet Next.js d'origine n'a pas été supprimé.
+Pour l'application complète avec estimation, IA, recherche de comparables et base de données, déployer le projet racine Next.js sur un hébergeur Node/Next.js.
