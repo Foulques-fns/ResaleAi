@@ -44,6 +44,14 @@ export async function POST(req: Request) {
   const query = (body.query ?? "").trim();
   if (query.length < 3) return NextResponse.json({ error: "query too short" }, { status: 400 });
   const lang: Lang = body.lang === "en" ? "en" : "fr";
+  const lang = body.lang === "en" ? "en" : "fr";
+if (!db) {
+  return NextResponse.json(
+    { error: "database_unavailable" },
+    { status: 503 }
+  );
+}
+const rows = await db.select().from(priceAlerts).where(eq(priceAlerts.id, body.id)).limit(1);
   const direction = ["rise", "drop", "any"].includes(body.direction ?? "") ? body.direction! : "any";
 
   // Baseline from a REAL live search at creation time: relevance-filtered,
