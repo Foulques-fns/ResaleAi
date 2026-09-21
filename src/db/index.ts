@@ -18,4 +18,8 @@ if (pool && process.env.NODE_ENV !== "production") {
   globalForDb.__resalePostgresqlPool = pool;
 }
 
-export const db = pool ? drizzle(pool) : null;
+// Keep the client lazy so a production build can run without DATABASE_URL.
+// API routes must still handle the unavailable database at request time.
+export const db = pool
+  ? drizzle(pool)
+  : (null as unknown as ReturnType<typeof drizzle>);
