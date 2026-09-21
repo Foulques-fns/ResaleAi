@@ -9,9 +9,18 @@ import type { Lang } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+function requireDb() {
+  if (!db) {
+    throw new Error("Database is not configured");
+  }
+
+  return db;
+}
+
 export async function GET() {
   try {
-    const rows = await db
+    const database = requireDb();
+    const rows = await database
       .select()
       .from(priceAlerts)
       .orderBy(desc(priceAlerts.createdAt))
@@ -98,7 +107,8 @@ export async function POST(req: Request) {
     computed.mid;
 
   try {
-    const [row] = await db
+    const database = requireDb();
+    const [row] = await database
       .insert(priceAlerts)
       .values({
         query,
@@ -141,7 +151,8 @@ export async function DELETE(req: Request) {
   }
 
   try {
-    await db
+    const database = requireDb();
+    await database
       .delete(priceAlerts)
       .where(eq(priceAlerts.id, id));
 
