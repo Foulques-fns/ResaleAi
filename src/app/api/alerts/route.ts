@@ -11,7 +11,12 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const rows = await db.select().from(priceAlerts).orderBy(desc(priceAlerts.createdAt)).limit(50);
+    const rows = await db
+      .select()
+      .from(priceAlerts)
+      .orderBy(desc(priceAlerts.createdAt))
+      .limit(50);
+
     return NextResponse.json({
       items: rows.map((r) => ({
         id: r.id,
@@ -24,7 +29,9 @@ export async function GET() {
         baselineHigh: r.baselineHigh,
         direction: r.direction,
         active: r.active,
-        lastCheckedAt: r.lastCheckedAt ? r.lastCheckedAt.toISOString() : null,
+        lastCheckedAt: r.lastCheckedAt
+          ? r.lastCheckedAt.toISOString()
+          : null,
         lastMid: r.lastMid,
         lastChangePct: r.lastChangePct,
       })),
@@ -35,32 +42,60 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  let body: { query?: string; itemLabel?: string; direction?: string; lang?: Lang };
+  let body: {
+    query?: string;
+    itemLabel?: string;
+    direction?: string;
+    lang?: Lang;
+  };
+
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
+    return NextResponse.json(
+      { error: "invalid JSON" },
+      { status: 400 }
+    );
   }
-  const query = (body.query ?? "").trim();
-  if (query.length < 3) return NextResponse.json({ error: "query too short" }, { status: 400 });
-  const lang: Lang = body.lang === "en" ? "en" : "fr";
-  const lang = body.lang === "en" ? "en" : "fr";
-if (!db) {
-  return NextResponse.json(
-    { error: "database_unavailable" },
-    { status: 503 }
-  );
-}
-const rows = await db.select().from(priceAlerts).where(eq(priceAlerts.id, body.id)).limit(1);
-  const direction = ["rise", "drop", "any"].includes(body.direction ?? "") ? body.direction! : "any";
 
-  // Baseline from a REAL live search at creation time: relevance-filtered,
-  // used-only market median — the exact same metric used by /api/alerts/check.
-  const { listings } = await liveSearchComparables(buildQuery({ name: query }), lang);
+  const query = (body.query ?? "").trim();
+
+  if (query.length < 3) {
+    return NextResponse.json(
+      { error: "query too short" },
+      { status: 400 }
+    );
+  }
+
+  const lang: Lang = body.lang === "en" ? "en" : "fr";
+
+  const direction = ["rise", "drop", "any"].includes(
+    body.direction ?? ""
+  )
+    ? body.direction!
+    : "any";
+
+  const { listings } = await liveSearchComparables(
+    buildQuery({ name: query }),
+    lang
+  );
+
   const snap = marketMedian(listings, query);
-  const { relevant } = filterRelevant(listings, { name: query });
-  const computed = computePrice(relevant, "good", lang);
-  const baseline = snap.mid || computed.stats.median || computed.mid;
+
+  const { relevant } = filterRelevant(listings, {
+    name: query,
+  });
+
+  const computed = computePrice(
+    relevant,
+    "good",
+    lang
+  );
+
+  const baseline =
+    snap.mid ||
+    computed.stats.median ||
+    computed.mid;
 
   try {
     const [row] = await db
@@ -78,24 +113,43 @@ const rows = await db.select().from(priceAlerts).where(eq(priceAlerts.id, body.i
         lastChangePct: 0,
       })
       .returning();
+
     return NextResponse.json({
       id: row.id,
       baselineMid: row.baselineMid,
-      sampleSize: snap.sample || computed.stats.sampleSize,
+      sampleSize:
+        snap.sample ||
+        computed.stats.sampleSize,
     });
   } catch {
-    return NextResponse.json({ error: "db_error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "db_error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function DELETE(req: Request) {
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "missing id" }, { status: 400 });
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "missing id" },
+      { status: 400 }
+    );
+  }
+
   try {
-    await db.delete(priceAlerts).where(eq(priceAlerts.id, id));
+    await db
+      .delete(priceAlerts)
+      .where(eq(priceAlerts.id, id));
+
     return NextResponse.json({ ok: true });
   } catch {
-    return NextResponse.json({ error: "db_error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "db_error" },
+      { status: 500 }
+    );
   }
 }
