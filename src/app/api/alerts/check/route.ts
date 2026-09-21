@@ -21,11 +21,20 @@ export async function POST(req: Request) {
   }
   if (!body.id) return NextResponse.json({ error: "missing id" }, { status: 400 });
   const lang = body.lang === "en" ? "en" : "fr";
+if (!db) {
+  return NextResponse.json(
+    { error: "database_unavailable" },
+    { status: 503 }
+  );
+}
 
-  const rows = await db.select().from(priceAlerts).where(eq(priceAlerts.id, body.id)).limit(1);
+  const rows = await db
+  .select()
+  .from(priceAlerts)
+  .where(eq(priceAlerts.id, body.id))
+  .limit(1);
   const alert = rows[0];
   if (!alert) return NextResponse.json({ error: "not_found" }, { status: 404 });
-
   const { listings, logs } = await liveSearchComparables(alert.query, lang);
   const snap = marketMedian(listings, alert.query);
   const currentMid = snap.sample >= 2 ? snap.mid : alert.baselineMid;
