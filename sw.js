@@ -4,22 +4,22 @@ const SHELL_CACHE = `${VERSION}-shell`;
 const STATIC_CACHE = `${VERSION}-static`;
 
 const PRECACHE = [
-  "/app/index.html",
-  "/app/scan.html",
-  "/app/estimation.html",
-  "/app/history.html",
-  "/app/alerts.html",
-  "/app/offline.html",
-  "/app/privacy.html",
-  "/app/styles.css",
-  "/app/app.js",
-  "/app/index.js",
-  "/app/scan.js",
-  "/app/estimation.js",
-  "/app/history.js",
-  "/app/alerts.js",
-  "/app/settings.html",
-  "/app/settings.js",
+  "./index.html",
+  "./scan.html",
+  "./estimation.html",
+  "./history.html",
+  "./alerts.html",
+  "./offline.html",
+  "./privacy.html",
+  "./styles.css",
+  "./app.js",
+  "./index.js",
+  "./scan.js",
+  "./estimation.js",
+  "./history.js",
+  "./alerts.js",
+  "./settings.html",
+  "./settings.js",
   "/manifest.webmanifest",
   "/brand/resaleai-logo.svg",
   "/brand/resaleai-mark.svg",
@@ -67,12 +67,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigation : réseau d'abord, page cachée, puis /app/offline.html
+  // Navigation : réseau d'abord, page cachée, puis ./offline.html
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          if (res.ok && url.pathname.startsWith("/app/")) {
+          if (res.ok && (/\.(html|js|css|svg|webmanifest)$/.test(url.pathname))) {
             const clone = res.clone();
             caches.open(SHELL_CACHE).then((c) => c.put(req, clone));
           }
@@ -81,8 +81,8 @@ self.addEventListener("fetch", (event) => {
         .catch(async () => {
           const cached = await caches.match(req);
           if (cached) return cached;
-          if (url.pathname.startsWith("/app/") || url.pathname === "/") {
-            const offline = await caches.match("/app/offline.html");
+          if ((/\.(html|js|css|svg|webmanifest)$/.test(url.pathname)) || url.pathname === "/") {
+            const offline = await caches.match("./offline.html");
             if (offline) return offline;
           }
           return new Response("offline", { status: 503 });
@@ -92,7 +92,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Statique local (js/css/icons/fonts proxys) : cache d'abord
-  if (url.pathname.startsWith("/_next/") || url.pathname.startsWith("/icons/") || url.pathname.startsWith("/app/")) {
+  if (url.pathname.startsWith("/_next/") || url.pathname.startsWith("/icons/") || (/\.(html|js|css|svg|webmanifest)$/.test(url.pathname))) {
     event.respondWith(
       caches.match(req).then(
         (cached) =>

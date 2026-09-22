@@ -72,7 +72,7 @@
     const ll = div.querySelector("#lotList");
     lotItems.forEach((i) => {
       const a = document.createElement("a");
-      a.href = `/app/estimation.html?id=${i.id}`;
+      a.href = `./estimation.html?id=${i.id}`;
       a.style.cssText = "display:flex;justify-content:space-between;padding:0.5rem 0;font-size:0.875rem;border-top:1px solid rgba(35,38,45,0.6);text-decoration:none;color:var(--bone)";
       const name = document.createElement("span");
       name.style.cssText = "overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:0.5rem";
@@ -96,14 +96,14 @@
       const e = document.createElement("div");
       e.className = "card empty";
       e.innerHTML = `<span class="empty-icon">${PS.ICONS.history}</span><p class="small muted">${T().hist.empty}</p>
-        <a href="/app/scan.html" class="btn btn--acid btn--sm">${PS.ICONS.camera} ${T().home.scan}</a>`;
+        <a href="./scan.html" class="btn btn--acid btn--sm">${PS.ICONS.camera} ${T().home.scan}</a>`;
       div.appendChild(e);
       return;
     }
     filtered.forEach((item) => {
       const a = document.createElement("a");
       a.className = "card";
-      a.href = `/app/estimation.html?id=${item.id}`;
+      a.href = `./estimation.html?id=${item.id}`;
       const thumb = item.thumb
         ? `<img class="thumb thumb--big" src="${item.thumb}" alt=""/>`
         : `<span class="thumb thumb--big thumb-ph">${PS.ICONS.camera}</span>`;

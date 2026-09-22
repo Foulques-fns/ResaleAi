@@ -40,7 +40,7 @@
     const csrfToken = await getCsrfToken();
     const body = new URLSearchParams({
       csrfToken,
-      callbackUrl: `${location.origin}/app/settings.html`,
+      callbackUrl: `${location.origin}./settings.html`,
       json: "true",
     });
     const res = await fetch("/api/auth/signin/google", {
@@ -56,7 +56,7 @@
     const csrfToken = await getCsrfToken();
     const body = new URLSearchParams({
       csrfToken,
-      callbackUrl: `${location.origin}/app/settings.html`,
+      callbackUrl: `${location.origin}./settings.html`,
       json: "true",
     });
     const res = await fetch("/api/auth/signout", {
@@ -65,7 +65,7 @@
       body,
     });
     const data = await res.json();
-    location.href = data?.url || "/app/settings.html";
+    location.href = data?.url || "./settings.html";
   }
 
   function toggleLink(platform) {
@@ -186,7 +186,7 @@
         <div class="card" style="overflow:hidden">
           <div class="setting-row" style="border-bottom:1px solid rgba(219,227,238,0.6)">
             <div><p class="small bold">${isEn ? "Privacy policy" : "Politique de confidentialité"}</p></div>
-            <a href="/app/privacy.html" class="btn btn--ghost btn--sm">${PS.ICONS.shield.replace('width="20" height="20"','width="14" height="14"')}</a>
+            <a href="./privacy.html" class="btn btn--ghost btn--sm">${PS.ICONS.shield.replace('width="20" height="20"','width="14" height="14"')}</a>
           </div>
           <div class="setting-row">
             <div><p class="small bold danger-text">${s.clearHistory}</p><p class="xsmall muted">${isEn ? "Erase all local data" : "Supprimer toutes les données locales"}</p></div>

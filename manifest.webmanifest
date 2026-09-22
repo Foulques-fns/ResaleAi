@@ -1,0 +1,17 @@
+{
+  "name": "ResaleAI — Estimation de valeur de revente",
+  "short_name": "ResaleAI",
+  "description": "Estimez la valeur de revente d'un objet à partir d'annonces comparables réelles, avec identification produit, historique et conseils de mise en vente.",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fbff",
+  "theme_color": "#ffffff",
+  "lang": "fr",
+  "categories": ["shopping", "utilities", "finance"],
+  "icons": [
+    {"src":"./brand/resaleai-mark.svg","sizes":"128x128","type":"image/svg+xml","purpose":"any"}
+  ]
+}

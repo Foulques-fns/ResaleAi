@@ -488,7 +488,7 @@
       const result = await res.json();
       PS.cacheEst(result.id, result);
       if (state.lotMode) PS.addLot(result.id);
-      location.href = `/app/estimation.html?id=${result.id}${state.lotMode ? "&lot=1" : ""}`;
+      location.href = `./estimation.html?id=${result.id}${state.lotMode ? "&lot=1" : ""}`;
     } catch {
       hideProgress();
       state.error = T().scan.netErr;

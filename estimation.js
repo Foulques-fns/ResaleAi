@@ -10,7 +10,7 @@
   const id = new URLSearchParams(location.search).get("id");
   const cameFromLot = new URLSearchParams(location.search).get("lot") === "1";
 
-  if (!id) { location.href = "/app/index.html"; return; }
+  if (!id) { location.href = "./index.html"; return; }
 
   let result = null;
   let offline = false;
@@ -22,7 +22,7 @@
       result = PS.readEst(id);
       offline = true;
       if (result) render();
-      else location.href = "/app/history.html";
+      else location.href = "./history.html";
     });
 
   function pct(v, min, max) {
@@ -45,7 +45,7 @@
           <div class="acid-box reveal">
             <strong class="acid-text">${T2.scan.lot}</strong>
             <span class="muted"> · ${PS.getLot().length} objets — </span>
-            <a href="/app/history.html#lot" style="color:var(--bone);font-weight:600;text-decoration:underline">${T2.scan.lotView}</a>
+            <a href="./history.html#lot" style="color:var(--bone);font-weight:600;text-decoration:underline">${T2.scan.lotView}</a>
           </div>` : ""}
 
         <section class="reveal">
@@ -170,14 +170,14 @@
         </section>
 
         <div class="reveal" style="display:flex;gap:0.625rem;padding-bottom:0.5rem">
-          <a href="/app/scan.html" class="btn btn--acid btn--lg" style="flex:1">${PS.ICONS.camera} ${T2.home.scan}</a>
-          ${cameFromLot ? `<a href="/app/scan.html" class="btn btn--ghost btn--lg">${PS.ICONS.plus} ${T2.newObject}</a>` : ""}
+          <a href="./scan.html" class="btn btn--acid btn--lg" style="flex:1">${PS.ICONS.camera} ${T2.home.scan}</a>
+          ${cameFromLot ? `<a href="./scan.html" class="btn btn--ghost btn--lg">${PS.ICONS.plus} ${T2.newObject}</a>` : ""}
         </div>
         <div class="center reveal" style="padding-bottom:1rem">
           <button id="deleteBtn" class="btn" style="background:none;color:rgba(154,163,175,0.7);font-size:0.75rem;padding:0.5rem">${PS.ICONS.trash.replace('width="20" height="20"','width="14" height="14"')} ${T2.res.delete}</button>
         </div>
         ${offline ? `<p class="xsmall warn-text">${T2.hist.offlineBadge}</p>` : ""}
-        ${inLot && !cameFromLot ? `<a href="/app/history.html#lot" class="card floating-lot">${PS.ICONS.layers} ${T2.scan.lotView} (${PS.getLot().length})</a>` : ""}
+        ${inLot && !cameFromLot ? `<a href="./history.html#lot" class="card floating-lot">${PS.ICONS.layers} ${T2.scan.lotView} (${PS.getLot().length})</a>` : ""}
       </div>`;
 
     // zones avec données externes → textContent anti-XSS
@@ -280,7 +280,7 @@
       await fetch(`/api/estimate/${r.id}`, { method: "DELETE" }).catch(() => {});
       PS.cacheEst(r.id, null);
       try { localStorage.removeItem("ps:cache:est:" + r.id); } catch {}
-      location.href = "/app/history.html";
+      location.href = "./history.html";
     };
   }
 
@@ -373,7 +373,7 @@
       const j = await res.json();
       if (j.id) {
         PS.cacheEst(j.id, j);
-        location.href = `/app/estimation.html?id=${j.id}`;
+        location.href = `./estimation.html?id=${j.id}`;
       }
     } catch { PS.toast(T().scan.netErr); render(); }
   }
