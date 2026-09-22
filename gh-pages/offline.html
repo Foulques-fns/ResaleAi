@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hors-ligne · ResaleAI</title>
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/brand/resaleai-mark.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <main id="main">
+      <div class="stack" style="padding-top:2rem">
+        <div class="reveal" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.75rem">
+          <span class="empty-icon" style="color:var(--warn)" id="offIcon"></span>
+          <h1 class="h-page" id="offTitle"></h1>
+          <p class="small muted" style="max-width:20rem" id="offBody"></p>
+          <button class="btn btn--ghost btn--sm" onclick="location.reload()" id="retryBtn"></button>
+        </div>
+        <section class="stack-sm reveal reveal-1">
+          <h2 class="section-title" id="cachedTitle"></h2>
+          <div id="cached" class="stack-sm"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+  <script>
+    (() => {
+      const T = PS.t();
+      PS.chrome("home");
+      document.getElementById("offIcon").innerHTML = PS.ICONS.wifiOff.replace('width="20" height="20"','width="28" height="28"');
+      document.getElementById("offTitle").textContent = T.scan.offlineTitle;
+      document.getElementById("offBody").textContent = T.scan.offlineBody;
+      document.getElementById("retryBtn").innerHTML = PS.ICONS.refresh + " " + T.retry;
+      document.getElementById("cachedTitle").textContent = T.cached;
+      window.addEventListener("online", () => (location.href = "/index.html"));
+      const items = PS.readHistory();
+      const wrap = document.getElementById("cached");
+      if (!items.length) {
+        const p = document.createElement("p");
+        p.className = "small muted";
+        p.textContent = T.hist.empty;
+        wrap.appendChild(p);
+        return;
+      }
+      items.forEach((item) => {
+        const a = document.createElement("a");
+        a.className = "card";
+        a.href = `/estimation.html?id=${item.id}`;
+        a.innerHTML = `${item.thumb ? `<img class="thumb" src="${item.thumb}" alt=""/>` : `<span class="thumb thumb-ph">${PS.ICONS.camera}</span>`}
+          <div style="min-width:0;flex:1">
+            <p class="listing-title"></p>
+            <p class="xsmall muted mt-1">${PS.timeAgo(item.createdAt)}</p>
+          </div>
+          <span class="num bold acid-text" style="font-size:0.875rem">${PS.fmtPrice(item.priceMid, item.currency)}</span>`;
+        a.querySelector(".listing-title").textContent = item.itemName;
+        wrap.appendChild(a);
+      });
+    })();
+  </script>
+</body>
+</html>
