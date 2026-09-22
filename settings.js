@@ -65,7 +65,7 @@
       body,
     });
     const data = await res.json();
-    location.href = data?.url || "/settings.html";
+    location.href = data?.url || "./settings.html";
   }
 
   function toggleLink(platform) {

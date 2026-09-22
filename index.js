@@ -24,8 +24,8 @@
       </h1>
       <p class="lead">${T().home.sub}</p>
       <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
-        <a href="/scan.html" class="btn btn--acid btn--lg" style="flex:1">${PS.ICONS.camera} ${T().home.scan}</a>
-        <a href="/history.html" class="btn btn--ghost btn--lg" aria-label="${T().nav.history}">${PS.ICONS.history}</a>
+        <a href="./scan.html" class="btn btn--acid btn--lg" style="flex:1">${PS.ICONS.camera} ${T().home.scan}</a>
+        <a href="./history.html" class="btn btn--ghost btn--lg" aria-label="${T().nav.history}">${PS.ICONS.history}</a>
       </div>
       <div style="margin-top:0.75rem">
         <button data-install class="btn btn--ghost btn--sm hidden">${PS.ICONS.download} ${T().home.install}</button>
@@ -46,7 +46,7 @@
   `;
 
   document.querySelector("[data-install]")?.addEventListener("click", PS.install);
-  document.getElementById("seeAll").onclick = () => (location.href = "/history.html");
+  document.getElementById("seeAll").onclick = () => (location.href = "./history.html");
 
   // features
   const feat = document.getElementById("features");
@@ -83,7 +83,7 @@
       const e = document.createElement("div");
       e.className = "card empty";
       e.innerHTML = `<span class="empty-icon">${PS.ICONS.camera}</span><p class="small muted">${T().home.empty}</p>
-        <a href="/scan.html" class="btn btn--acid btn--sm">${T().home.scan}</a>`;
+        <a href="./scan.html" class="btn btn--acid btn--sm">${T().home.scan}</a>`;
       recent.appendChild(e);
       return;
     }

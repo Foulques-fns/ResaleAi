@@ -6,12 +6,12 @@ const STATIC_CACHE = `${VERSION}-static`;
 /* Fichiers précachés à l'installation */
 const PRECACHE = [
   "/",
-  "/index.html",
-  "/scan.html",
-  "/estimation.html",
-  "/history.html",
-  "/alerts.html",
-  "/settings.html",
+  "./index.html",
+  "./scan.html",
+  "./estimation.html",
+  "./history.html",
+  "./alerts.html",
+  "./settings.html",
   "/offline.html",
   "/privacy.html",
   "/styles.css",

@@ -643,12 +643,12 @@ const PS = (() => {
       const b = document.createElement("button");
       b.className = "back-btn";
       b.innerHTML = `${ICONS.back} <span>${T.common.back}</span>`;
-      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "/index.html"));
+      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "./index.html"));
       inner.appendChild(b);
     } else {
       const logo = document.createElement("a");
       logo.className = "logo";
-      logo.href = "/index.html";
+      logo.href = "./index.html";
       logo.innerHTML = `<span class="logo-badge"><img src="/brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
       inner.appendChild(logo);
     }
@@ -674,11 +674,11 @@ const PS = (() => {
     const nav = document.createElement("nav");
     nav.className = "tabbar";
     const tabs = [
-      ["home", "/index.html", ICONS.scan, T.nav.home],
-      ["scan", "/scan.html", ICONS.camera, T.nav.scan],
-      ["history", "/history.html", ICONS.history, T.nav.history],
-      ["alerts", "/alerts.html", ICONS.bell, T.nav.alerts],
-      ["settings", "/settings.html", ICONS.settings, T.nav.settings],
+      ["home", "./index.html", ICONS.scan, T.nav.home],
+      ["scan", "./scan.html", ICONS.camera, T.nav.scan],
+      ["history", "./history.html", ICONS.history, T.nav.history],
+      ["alerts", "./alerts.html", ICONS.bell, T.nav.alerts],
+      ["settings", "./settings.html", ICONS.settings, T.nav.settings],
     ];
     const grid = document.createElement("div");
     grid.className = "tabbar-grid";
