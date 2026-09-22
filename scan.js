@@ -39,8 +39,15 @@
 
   /* ─── vérification connectivité réelle ─────────────────────── */
   async function ensureReachable() {
+    // Ne teste plus /api/health : sur GitHub Pages cette route n'existe pas
+    // et provoquait à tort le message « connexion internet ».
     try {
-      return (await apiFetch("/api/health", { cache: "no-store" })).ok;
+      await fetch("https://www.gstatic.com/generate_204", {
+        method: "GET",
+        mode: "no-cors",
+        cache: "no-store",
+      });
+      return true;
     } catch {
       return false;
     }
@@ -609,7 +616,9 @@
       hideProgress();
       const online = await ensureReachable();
       state.error = online
-        ? (LANG === "fr" ? "Analyse impossible. Réessayez ou décrivez l'objet ci-dessous." : "Analysis failed. Retry or describe the item below.")
+        ? (LANG === "fr"
+          ? "Internet fonctionne, mais le serveur d’estimation n’est pas connecté. Configurez l’URL du backend dans les paramètres."
+          : "Internet is working, but the estimation server is not connected. Configure the backend URL in settings.")
         : T().scan.netErr;
       // Passer quand même à confirm pour que l'utilisateur puisse saisir manuellement
       state.ai = state.ai || { aiAvailable: false, hypotheses: [], suspicious: null, category: null };

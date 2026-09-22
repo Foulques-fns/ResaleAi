@@ -15,7 +15,9 @@ const API_BASE = (function () {
   const stored = localStorage.getItem("ps:api_base");
   if (stored) return stored;
   // Détection automatique : si on est sur github.io, l'API est séparée
-  if (location.hostname.endsWith("github.io")) return "";
+  // Sur GitHub Pages, aucune API serveur n'est disponible localement.
+  // Une URL de backend peut être définie via localStorage (Paramètres)
+  // sans modifier le reste de l'application.
   return "";
 })();
 
@@ -72,7 +74,7 @@ const PS = (() => {
         analyze: "Lancer l'estimation",
         describe: "Décrire l'objet manuellement",
         steps: ["Analyse des photos…", "Recherche d'annonces comparables sur le web…", "Calcul de la fourchette…", "Préparation des conseils…"],
-        netErr: "Recherche web impossible : vérifiez votre connexion internet.",
+        netErr: "Le service d’estimation n’est pas connecté au serveur. Vérifiez l’URL du backend dans les paramètres.",
         netProbe: "Connexion vérifiée en cours…",
         aiMissing: "La vision IA n'est pas configurée. Décrivez l'objet — le prix restera calculé sur de vraies annonces web.",
         hypTitle: "L'analyse hésite — confirmez l'objet",
