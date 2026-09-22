@@ -1,4 +1,4 @@
-/* PriceSnap — historique + lot (vanilla) */
+/* ResaleAI — historique + lot (vanilla) */
 (() => {
   "use strict";
   const T = () => PS.t();

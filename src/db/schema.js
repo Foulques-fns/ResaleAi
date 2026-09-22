@@ -1,50 +1,20 @@
-import {
-  pgTable,
-  uuid,
-  text,
-  timestamp,
-  doublePrecision,
-  integer,
-  boolean,
-  jsonb,
-  index,
-} from "drizzle-orm/pg-core";
-import type {
-  Condition,
-  EstimateAdvice,
-  IdentificationHypothesis,
-  Listing,
-  PriceStats,
-  SearchLogEntry,
-} from "@/lib/types";
-
-export type EstimationInput = {
-  photos: string[];
-  thumb?: string;
-  notes: string;
-  condition: Condition;
-  manualQuery?: string;
-  barcode?: string;
-};
-
-export const estimations = pgTable(
-  "estimations",
-  {
+import { pgTable, uuid, text, timestamp, doublePrecision, integer, boolean, jsonb, index, } from "drizzle-orm/pg-core";
+export const estimations = pgTable("estimations", {
     id: uuid("id").defaultRandom().primaryKey(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     lang: text("lang").default("fr").notNull(),
-    input: jsonb("input").$type<EstimationInput>().notNull(),
+    input: jsonb("input").$type().notNull(),
     itemName: text("item_name").notNull(),
     brand: text("brand"),
     model: text("model"),
     category: text("category"),
     confidence: doublePrecision("confidence").default(0).notNull(),
     aiSource: text("ai_source").default("manual").notNull(),
-    hypotheses: jsonb("hypotheses").$type<IdentificationHypothesis[]>().default([]).notNull(),
+    hypotheses: jsonb("hypotheses").$type().default([]).notNull(),
     queryText: text("query_text").default("").notNull(),
-    condition: text("condition").$type<Condition>().default("good").notNull(),
-    listings: jsonb("listings").$type<Listing[]>().default([]).notNull(),
-    stats: jsonb("stats").$type<PriceStats>().notNull(),
+    condition: text("condition").$type().default("good").notNull(),
+    listings: jsonb("listings").$type().default([]).notNull(),
+    stats: jsonb("stats").$type().notNull(),
     priceLow: doublePrecision("price_low").default(0).notNull(),
     priceMid: doublePrecision("price_mid").default(0).notNull(),
     priceHigh: doublePrecision("price_high").default(0).notNull(),
@@ -53,20 +23,15 @@ export const estimations = pgTable(
     demand: text("demand").default("unknown").notNull(),
     sellDaysLow: integer("sell_days_low").default(0).notNull(),
     sellDaysHigh: integer("sell_days_high").default(0).notNull(),
-    advice: jsonb("advice").$type<EstimateAdvice>().notNull(),
+    advice: jsonb("advice").$type().notNull(),
     listingCopy: text("listing_copy").default("").notNull(),
-    warnings: jsonb("warnings").$type<string[]>().default([]).notNull(),
-    searchLog: jsonb("search_log").$type<SearchLogEntry[]>().default([]).notNull(),
+    warnings: jsonb("warnings").$type().default([]).notNull(),
+    searchLog: jsonb("search_log").$type().default([]).notNull(),
     soldPrice: doublePrecision("sold_price"),
     soldPlatform: text("sold_platform"),
     soldAt: timestamp("sold_at", { mode: "date" }),
-  },
-  (t) => [index("estimations_created_idx").on(t.createdAt)],
-);
-
-export const priceAlerts = pgTable(
-  "price_alerts",
-  {
+}, (t) => [index("estimations_created_idx").on(t.createdAt)]);
+export const priceAlerts = pgTable("price_alerts", {
     id: uuid("id").defaultRandom().primaryKey(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     query: text("query").notNull(),
@@ -80,9 +45,4 @@ export const priceAlerts = pgTable(
     lastCheckedAt: timestamp("last_checked_at", { mode: "date" }),
     lastMid: doublePrecision("last_mid"),
     lastChangePct: doublePrecision("last_change_pct"),
-  },
-  (t) => [index("alerts_created_idx").on(t.createdAt)],
-);
-
-export type EstimationRow = typeof estimations.$inferSelect;
-export type PriceAlertRow = typeof priceAlerts.$inferSelect;
+}, (t) => [index("alerts_created_idx").on(t.createdAt)]);

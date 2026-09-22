@@ -1,4 +1,4 @@
-/* PriceSnap — scanner : caméra en direct (getUserMedia), recadrage,
+/* ResaleAI — scanner : caméra en direct (getUserMedia), recadrage,
    état, notes, code-barres, identification IA puis estimation. */
 (() => {
   "use strict";

@@ -1,4 +1,4 @@
-/* PriceSnap — page d'accueil */
+/* ResaleAI — page d'accueil */
 (() => {
   "use strict";
   const T = () => PS.t();
@@ -9,14 +9,17 @@
   const FEATURE_ICONS = [PS.ICONS.search, PS.ICONS.globe, PS.ICONS.wallet, PS.ICONS.zap];
 
   main.innerHTML = `
-    <section class="reveal" style="padding-top:1.5rem">
-      <p class="chip chip--acid" style="margin-bottom:1rem">
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--acid);display:inline-block"></span>
-        ${T().tagline}
-      </p>
+    <section class="reveal hero-card" style="margin-top:0.75rem">
+      <div class="hero-brand">
+        <img src="/brand/resaleai-logo.svg" alt="ResaleAI"/>
+        <div>
+          <p class="hero-kicker">${T().tagline}</p>
+          <h1 class="h-page" style="margin-top:0.2rem">ResaleAI</h1>
+        </div>
+      </div>
       <h1 class="h-hero">${T().home.heroA}<br>
         <span class="hero-underline">${T().home.heroB}
-          <svg viewBox="0 0 200 9" fill="none" preserveAspectRatio="none"><path d="M1 6C50 1.5 150 1.5 199 6" stroke="currentColor" stroke-opacity="0.35" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 200 9" fill="none" preserveAspectRatio="none"><path d="M1 6C50 1.5 150 1.5 199 6" stroke="currentColor" stroke-opacity="0.18" stroke-width="2.5" stroke-linecap="round"/></svg>
         </span>
       </h1>
       <p class="lead">${T().home.sub}</p>

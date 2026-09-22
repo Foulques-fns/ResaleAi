@@ -1,4 +1,4 @@
-/* PriceSnap — fiche d'estimation (vanilla) */
+/* ResaleAI — fiche d'estimation (vanilla) */
 (() => {
   "use strict";
   const T = () => PS.t();

@@ -1,5 +1,5 @@
-/* PriceSnap service worker — mode hors-ligne partiel (app HTML/CSS/JS) */
-const VERSION = "ps-v2";
+/* ResaleAI service worker — mode hors-ligne partiel (app HTML/CSS/JS) */
+const VERSION = "ps-v4";
 const SHELL_CACHE = `${VERSION}-shell`;
 const STATIC_CACHE = `${VERSION}-static`;
 
@@ -18,7 +18,11 @@ const PRECACHE = [
   "/app/estimation.js",
   "/app/history.js",
   "/app/alerts.js",
+  "/app/settings.html",
+  "/app/settings.js",
   "/manifest.webmanifest",
+  "/brand/resaleai-logo.svg",
+  "/brand/resaleai-mark.svg",
   "/icons/icon.png",
 ];
 

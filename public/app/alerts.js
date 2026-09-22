@@ -1,4 +1,4 @@
-/* PriceSnap — alertes prix (vanilla) */
+/* ResaleAI — alertes prix (vanilla) */
 (() => {
   "use strict";
   const T = () => PS.t();
