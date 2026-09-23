@@ -142,7 +142,7 @@
           if (j.triggered && "Notification" in window && Notification.permission === "granted") {
             new Notification(T().alerts.changed, {
               body: `${a.itemLabel}: ${j.changePct > 0 ? "+" : ""}${j.changePct}% (${j.currentMid} ${a.currency})`,
-              icon: "/icons/icon.png",
+              icon: "./icons/icon.png",
             });
           }
           load();

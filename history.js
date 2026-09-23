@@ -96,7 +96,7 @@
       const e = document.createElement("div");
       e.className = "card empty";
       e.innerHTML = `<span class="empty-icon">${PS.ICONS.history}</span><p class="small muted">${T().hist.empty}</p>
-        <a href="/scan.html" class="btn btn--acid btn--sm">${PS.ICONS.camera} ${T().home.scan}</a>`;
+        <a href="./scan.html" class="btn btn--acid btn--sm">${PS.ICONS.camera} ${T().home.scan}</a>`;
       div.appendChild(e);
       return;
     }

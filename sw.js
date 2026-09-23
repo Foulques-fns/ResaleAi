@@ -1,31 +1,31 @@
 /* ResaleAI — Service Worker — version GitHub Pages (statique) */
-const VERSION = "resaleai-gh-v1";
+const VERSION = "resaleai-gh-v3";
 const SHELL_CACHE = `${VERSION}-shell`;
 const STATIC_CACHE = `${VERSION}-static`;
 
 /* Fichiers précachés à l'installation */
 const PRECACHE = [
   "/",
-  "/index.html",
-  "/scan.html",
-  "/estimation.html",
-  "/history.html",
-  "/alerts.html",
-  "/settings.html",
-  "/offline.html",
-  "/privacy.html",
-  "/styles.css",
-  "/app.js",
-  "/index.js",
-  "/scan.js",
-  "/estimation.js",
-  "/history.js",
-  "/alerts.js",
-  "/settings.js",
-  "/brand/resaleai-logo.svg",
-  "/brand/resaleai-mark.svg",
-  "/icons/icon.png",
-  "/manifest.webmanifest",
+  "./index.html",
+  "./scan.html",
+  "./estimation.html",
+  "./history.html",
+  "./alerts.html",
+  "./settings.html",
+  "./offline.html",
+  "./privacy.html",
+  "./styles.css",
+  "./app.js",
+  "./index.js",
+  "./scan.js",
+  "./estimation.js",
+  "./history.js",
+  "./alerts.js",
+  "./settings.js",
+  "./brand/resaleai-logo.svg",
+  "./brand/resaleai-mark.svg",
+  "./icons/icon.png",
+  "./manifest.webmanifest",
 ];
 
 /* ─── Installation ─────────────────────────────────────────────── */
@@ -91,7 +91,7 @@ self.addEventListener("fetch", (event) => {
         .catch(async () => {
           const cached = await caches.match(req);
           if (cached) return cached;
-          const offline = await caches.match("/offline.html");
+          const offline = await caches.match("./offline.html");
           return offline || new Response("Offline", { status: 503 });
         }),
     );

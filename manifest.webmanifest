@@ -12,21 +12,21 @@
   "lang": "fr",
   "categories": ["shopping", "utilities", "finance"],
   "icons": [
-    { "src": "/brand/resaleai-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "/icons/icon.png", "sizes": "1254x1254", "type": "image/png", "purpose": "maskable" }
+    { "src": "./brand/resaleai-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icons/icon.png", "sizes": "1254x1254", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
     {
       "name": "Scanner un objet",
       "short_name": "Scanner",
-      "url": "/scan.html",
-      "icons": [{ "src": "/brand/resaleai-mark.svg", "sizes": "any" }]
+      "url": "./scan.html",
+      "icons": [{ "src": "./brand/resaleai-mark.svg", "sizes": "any" }]
     },
     {
       "name": "Historique",
       "short_name": "Historique",
-      "url": "/history.html",
-      "icons": [{ "src": "/brand/resaleai-mark.svg", "sizes": "any" }]
+      "url": "./history.html",
+      "icons": [{ "src": "./brand/resaleai-mark.svg", "sizes": "any" }]
     }
   ]
 }

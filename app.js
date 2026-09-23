@@ -14,25 +14,13 @@
 const API_BASE = (function () {
   const stored = localStorage.getItem("ps:api_base");
   if (stored) return stored;
-  // Détection auto pour l'URL de preview de la plateforme
-  if (location.hostname.includes("e2b.app")) return "";
+  // Détection automatique : si on est sur github.io, l'API est séparée
+  if (location.hostname.endsWith("github.io")) return "";
   return "";
 })();
 
-/* Wrapper fetch qui préfixe automatiquement les appels /api/ et gère les timeouts */
-const apiFetch = async (path, init = {}) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), init.timeout || 45000);
-  try {
-    const res = await fetch(API_BASE + path, {
-      ...init,
-      signal: controller.signal,
-    });
-    return res;
-  } finally {
-    clearTimeout(timeout);
-  }
-};
+/* Wrapper fetch qui préfixe automatiquement les appels /api/ */
+const apiFetch = (path, init) => fetch(API_BASE + path, init);
 
 const PS = (() => {
   const DICTS = {
@@ -655,13 +643,13 @@ const PS = (() => {
       const b = document.createElement("button");
       b.className = "back-btn";
       b.innerHTML = `${ICONS.back} <span>${T.common.back}</span>`;
-      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "/index.html"));
+      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "./index.html"));
       inner.appendChild(b);
     } else {
       const logo = document.createElement("a");
       logo.className = "logo";
-      logo.href = "/index.html";
-      logo.innerHTML = `<span class="logo-badge"><img src="/brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
+      logo.href = "./index.html";
+      logo.innerHTML = `<span class="logo-badge"><img src="./brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
       inner.appendChild(logo);
     }
 
@@ -686,11 +674,11 @@ const PS = (() => {
     const nav = document.createElement("nav");
     nav.className = "tabbar";
     const tabs = [
-      ["home", "/index.html", ICONS.scan, T.nav.home],
-      ["scan", "/scan.html", ICONS.camera, T.nav.scan],
-      ["history", "/history.html", ICONS.history, T.nav.history],
-      ["alerts", "/alerts.html", ICONS.bell, T.nav.alerts],
-      ["settings", "/settings.html", ICONS.settings, T.nav.settings],
+      ["home", "./index.html", ICONS.scan, T.nav.home],
+      ["scan", "./scan.html", ICONS.camera, T.nav.scan],
+      ["history", "./history.html", ICONS.history, T.nav.history],
+      ["alerts", "./alerts.html", ICONS.bell, T.nav.alerts],
+      ["settings", "./settings.html", ICONS.settings, T.nav.settings],
     ];
     const grid = document.createElement("div");
     grid.className = "tabbar-grid";

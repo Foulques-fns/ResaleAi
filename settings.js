@@ -65,7 +65,7 @@
       body,
     });
     const data = await res.json();
-    location.href = data?.url || "/settings.html";
+    location.href = data?.url || "./settings.html";
   }
 
   function toggleLink(platform) {
@@ -158,7 +158,7 @@
         <h2 class="section-title">${s.pwa}</h2>
         <div class="card card--pad" style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
           <div style="display:flex;align-items:center;gap:0.75rem">
-            <img src="/brand/resaleai-mark.svg" alt="" style="width:2.5rem;height:2.5rem;border-radius:0.6rem;box-shadow:var(--shadow-sm)"/>
+            <img src="./brand/resaleai-mark.svg" alt="" style="width:2.5rem;height:2.5rem;border-radius:0.6rem;box-shadow:var(--shadow-sm)"/>
             <div><p class="small bold">ResaleAI</p><p class="xsmall muted">${s.pwaSub}</p></div>
           </div>
           <button class="btn btn--acid btn--sm" id="installBtn">${PS.ICONS.download.replace('width="20" height="20"','width="16" height="16"')} ${s.install}</button>
@@ -186,7 +186,7 @@
         <div class="card" style="overflow:hidden">
           <div class="setting-row" style="border-bottom:1px solid rgba(219,227,238,0.6)">
             <div><p class="small bold">${isEn ? "Privacy policy" : "Politique de confidentialité"}</p></div>
-            <a href="/privacy.html" class="btn btn--ghost btn--sm">${PS.ICONS.shield.replace('width="20" height="20"','width="14" height="14"')}</a>
+            <a href="./privacy.html" class="btn btn--ghost btn--sm">${PS.ICONS.shield.replace('width="20" height="20"','width="14" height="14"')}</a>
           </div>
           <div class="setting-row">
             <div><p class="small bold danger-text">${s.clearHistory}</p><p class="xsmall muted">${isEn ? "Erase all local data" : "Supprimer toutes les données locales"}</p></div>
