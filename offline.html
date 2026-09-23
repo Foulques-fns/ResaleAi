@@ -53,7 +53,7 @@
       items.forEach((item) => {
         const a = document.createElement("a");
         a.className = "card";
-        a.href = `/estimation.html?id=${item.id}`;
+        a.href = `./estimation.html?id=${item.id}`;
         a.innerHTML = `${item.thumb ? `<img class="thumb" src="${item.thumb}" alt=""/>` : `<span class="thumb thumb-ph">${PS.ICONS.camera}</span>`}
           <div style="min-width:0;flex:1">
             <p class="listing-title"></p>

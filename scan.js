@@ -323,7 +323,7 @@
   /* ─── résolution EAN / ISBN en arrière-plan ─────────────────── */
   async function doLookup(code) {
     try {
-      const res = await fetch(`/api/barcode?code=${encodeURIComponent(code)}`, { cache: "no-store" });
+      const res = await apiFetch(`/api/barcode?code=${encodeURIComponent(code)}`, { cache: "no-store" });
       const j = await res.json();
       if (res.ok && j.found) {
         state.eanOk = true;
@@ -764,7 +764,7 @@
       const result = await res.json();
       PS.cacheEst(result.id, result);
       if (state.lotMode) PS.addLot(result.id);
-      location.href = `/estimation.html?id=${result.id}${state.lotMode ? "&lot=1" : ""}`;
+      location.href = `./estimation.html?id=${result.id}${state.lotMode ? "&lot=1" : ""}`;
     } catch {
       hideProgress();
       const online = await ensureReachable();

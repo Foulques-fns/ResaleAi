@@ -123,7 +123,7 @@
         </p>` : ""}`;
       card.querySelector("p.small.bold").textContent = a.itemLabel;
       card.querySelector("[data-del]").onclick = async () => {
-        await fetch(`/api/alerts?id=${a.id}`, { method: "DELETE" }).catch(() => {});
+        await apiFetch(`/api/alerts?id=${a.id}`, { method: "DELETE" }).catch(() => {});
         items = items.filter((x) => x.id !== a.id);
         render();
       };
@@ -142,7 +142,7 @@
           if (j.triggered && "Notification" in window && Notification.permission === "granted") {
             new Notification(T().alerts.changed, {
               body: `${a.itemLabel}: ${j.changePct > 0 ? "+" : ""}${j.changePct}% (${j.currentMid} ${a.currency})`,
-              icon: "/icons/icon.png",
+              icon: "./icons/icon.png",
             });
           }
           load();

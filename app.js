@@ -254,7 +254,7 @@ const PS = (() => {
         analyze: "Run estimate",
         describe: "Describe the item manually",
         steps: ["Analyzing photos…", "Searching comparable listings on the web…", "Computing the range…", "Preparing selling advice…"],
-        netErr: "Web search failed: check your internet connection.",
+        netErr: "The estimation backend is not connected.",
         netProbe: "Checking connection…",
         aiMissing: "AI vision is not configured. Describe the item — the price will still be computed from real web listings.",
         hypTitle: "The analysis is unsure — confirm the item",
@@ -618,7 +618,7 @@ const PS = (() => {
   let deferredPrompt = null;
   function registerPWA() {
     if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("/sw.js").catch(() => {});
+    navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -651,7 +651,7 @@ const PS = (() => {
       const logo = document.createElement("a");
       logo.className = "logo";
       logo.href = "./index.html";
-      logo.innerHTML = `<span class="logo-badge"><img src="/brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
+      logo.innerHTML = `<span class="logo-badge"><img src="./brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
       inner.appendChild(logo);
     }
 

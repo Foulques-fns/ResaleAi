@@ -11,7 +11,7 @@
   main.innerHTML = `
     <section class="reveal hero-card" style="margin-top:0.75rem">
       <div class="hero-brand">
-        <img src="/brand/resaleai-logo.svg" alt="ResaleAI"/>
+        <img src="./brand/resaleai-logo.svg" alt="ResaleAI"/>
         <div>
           <p class="hero-kicker">${T().tagline}</p>
           <h1 class="h-page" style="margin-top:0.2rem">ResaleAI</h1>
@@ -41,7 +41,7 @@
     <section class="stack-sm mt-4" id="features"></section>
     <footer class="app-foot mt-4">
       <p style="display:flex;align-items:center;gap:0.4rem">${PS.ICONS.shield} ${T().home.offlineNote}</p>
-      <a href="/privacy.html" style="text-decoration:underline">${T().home.privacy}</a>
+      <a href="./privacy.html" style="text-decoration:underline">${T().home.privacy}</a>
     </footer>
   `;
 
@@ -99,7 +99,7 @@
   function historyRow(item) {
     const a = document.createElement("a");
     a.className = "card";
-    a.href = `/estimation.html?id=${item.id}`;
+    a.href = `./estimation.html?id=${item.id}`;
     const thumb = item.thumb
       ? `<img class="thumb" src="${item.thumb}" alt="" />`
       : `<span class="thumb thumb-ph">${PS.ICONS.camera}</span>`;

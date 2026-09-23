@@ -72,7 +72,7 @@
     const ll = div.querySelector("#lotList");
     lotItems.forEach((i) => {
       const a = document.createElement("a");
-      a.href = `/estimation.html?id=${i.id}`;
+      a.href = `./estimation.html?id=${i.id}`;
       a.style.cssText = "display:flex;justify-content:space-between;padding:0.5rem 0;font-size:0.875rem;border-top:1px solid rgba(35,38,45,0.6);text-decoration:none;color:var(--bone)";
       const name = document.createElement("span");
       name.style.cssText = "overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:0.5rem";
@@ -103,7 +103,7 @@
     filtered.forEach((item) => {
       const a = document.createElement("a");
       a.className = "card";
-      a.href = `/estimation.html?id=${item.id}`;
+      a.href = `./estimation.html?id=${item.id}`;
       const thumb = item.thumb
         ? `<img class="thumb thumb--big" src="${item.thumb}" alt=""/>`
         : `<span class="thumb thumb--big thumb-ph">${PS.ICONS.camera}</span>`;

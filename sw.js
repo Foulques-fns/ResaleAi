@@ -1,115 +1,34 @@
-/* ResaleAI — Service Worker — version GitHub Pages (statique) */
-const VERSION = "resaleai-gh-v1";
+/* ResaleAI — Service Worker — GitHub Pages compatible */
+const VERSION = "resaleai-gh-v2";
 const SHELL_CACHE = `${VERSION}-shell`;
 const STATIC_CACHE = `${VERSION}-static`;
-
-/* Fichiers précachés à l'installation */
+const BASE = new URL("./", self.location.href);
 const PRECACHE = [
-  "/",
-  "./index.html",
-  "./scan.html",
-  "./estimation.html",
-  "./history.html",
-  "./alerts.html",
-  "./settings.html",
-  "/offline.html",
-  "/privacy.html",
-  "/styles.css",
-  "/app.js",
-  "/index.js",
-  "/scan.js",
-  "/estimation.js",
-  "/history.js",
-  "/alerts.js",
-  "/settings.js",
-  "/brand/resaleai-logo.svg",
-  "/brand/resaleai-mark.svg",
-  "/icons/icon.png",
-  "/manifest.webmanifest",
+  "./", "./index.html", "./scan.html", "./estimation.html", "./history.html",
+  "./alerts.html", "./settings.html", "./offline.html", "./privacy.html",
+  "./styles.css", "./app.js", "./index.js", "./scan.js", "./estimation.js",
+  "./history.js", "./alerts.js", "./settings.js", "./brand/resaleai-logo.svg",
+  "./brand/resaleai-mark.svg", "./manifest.webmanifest"
 ];
-
-/* ─── Installation ─────────────────────────────────────────────── */
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches
-      .open(SHELL_CACHE)
-      .then((cache) => cache.addAll(PRECACHE))
-      .then(() => self.skipWaiting())
-      .catch(() => self.skipWaiting()),
-  );
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(SHELL_CACHE).then(c => c.addAll(PRECACHE)).catch(() => {}).then(() => self.skipWaiting()));
 });
-
-/* ─── Activation / nettoyage des anciens caches ───────────────── */
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((k) => !k.startsWith(VERSION)).map((k) => caches.delete(k))),
-      )
-      .then(() => self.clients.claim()),
-  );
+self.addEventListener("activate", event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => !k.startsWith(VERSION)).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
-
-/* ─── Interception des requêtes ───────────────────────────────── */
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-
-  /* Requêtes API (backend séparé) : réseau d'abord, cache en secours */
-  if (url.pathname.startsWith("/api/")) {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(STATIC_CACHE).then((c) => c.put(req, clone));
-          }
-          return res;
-        })
-        .catch(
-          () =>
-            caches.match(req).then((r) => r || new Response(JSON.stringify({ offline: true }), { status: 503, headers: { "Content-Type": "application/json" } })),
-        ),
-    );
+  // API calls: never pretend that a missing API is an internet outage.
+  if (url.pathname.includes("/api/")) {
+    event.respondWith(fetch(req).catch(() => new Response(JSON.stringify({error:"BACKEND_UNAVAILABLE"}), {status:503, headers:{"Content-Type":"application/json"}})));
     return;
   }
-
-  /* Navigation (pages HTML) : réseau d'abord, cache, sinon offline.html */
   if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(SHELL_CACHE).then((c) => c.put(req, clone));
-          }
-          return res;
-        })
-        .catch(async () => {
-          const cached = await caches.match(req);
-          if (cached) return cached;
-          const offline = await caches.match("/offline.html");
-          return offline || new Response("Offline", { status: 503 });
-        }),
-    );
+    event.respondWith(fetch(req).then(res => { if(res.ok) caches.open(SHELL_CACHE).then(c=>c.put(req,res.clone())); return res; }).catch(async()=> (await caches.match(req)) || (await caches.match(new URL("./offline.html", self.location.href))) || new Response("Offline",{status:503})));
     return;
   }
-
-  /* Assets statiques (JS, CSS, images, fonts) : cache d'abord */
-  event.respondWith(
-    caches.match(req).then(
-      (cached) =>
-        cached ||
-        fetch(req).then((res) => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(STATIC_CACHE).then((c) => c.put(req, clone));
-          }
-          return res;
-        }),
-    ),
-  );
+  event.respondWith(caches.match(req).then(cached => cached || fetch(req).then(res => { if(res.ok) caches.open(STATIC_CACHE).then(c=>c.put(req,res.clone())); return res; })));
 });

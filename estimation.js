@@ -15,7 +15,7 @@
   let result = null;
   let offline = false;
 
-  fetch(`/api/estimate/${id}`)
+  apiFetch(`/api/estimate/${id}`)
     .then((r) => { if (!r.ok) throw new Error("404"); return r.json(); })
     .then((j) => { result = j; PS.cacheEst(j.id, j); render(); })
     .catch(() => {
@@ -45,7 +45,7 @@
           <div class="acid-box reveal">
             <strong class="acid-text">${T2.scan.lot}</strong>
             <span class="muted"> · ${PS.getLot().length} objets — </span>
-            <a href="/history.html#lot" style="color:var(--bone);font-weight:600;text-decoration:underline">${T2.scan.lotView}</a>
+            <a href="./history.html#lot" style="color:var(--bone);font-weight:600;text-decoration:underline">${T2.scan.lotView}</a>
           </div>` : ""}
 
         <section class="reveal">
@@ -177,7 +177,7 @@
           <button id="deleteBtn" class="btn" style="background:none;color:rgba(154,163,175,0.7);font-size:0.75rem;padding:0.5rem">${PS.ICONS.trash.replace('width="20" height="20"','width="14" height="14"')} ${T2.res.delete}</button>
         </div>
         ${offline ? `<p class="xsmall warn-text">${T2.hist.offlineBadge}</p>` : ""}
-        ${inLot && !cameFromLot ? `<a href="/history.html#lot" class="card floating-lot">${PS.ICONS.layers} ${T2.scan.lotView} (${PS.getLot().length})</a>` : ""}
+        ${inLot && !cameFromLot ? `<a href="./history.html#lot" class="card floating-lot">${PS.ICONS.layers} ${T2.scan.lotView} (${PS.getLot().length})</a>` : ""}
       </div>`;
 
     // zones avec données externes → textContent anti-XSS
@@ -277,7 +277,7 @@
       setTimeout(() => render(), 2000);
     };
     document.getElementById("deleteBtn").onclick = async () => {
-      await fetch(`/api/estimate/${r.id}`, { method: "DELETE" }).catch(() => {});
+      await apiFetch(`/api/estimate/${r.id}`, { method: "DELETE" }).catch(() => {});
       PS.cacheEst(r.id, null);
       try { localStorage.removeItem("ps:cache:est:" + r.id); } catch {}
       location.href = "./history.html";
@@ -337,7 +337,7 @@
       if (!(price >= 0)) return;
       try {
         const j = await (
-          await fetch(`/api/estimate/${r.id}`, {
+          await apiFetch(`/api/estimate/${r.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ soldPrice: price, soldPlatform: back.querySelector("#soldPlat").value || null }),
@@ -373,7 +373,7 @@
       const j = await res.json();
       if (j.id) {
         PS.cacheEst(j.id, j);
-        location.href = `/estimation.html?id=${j.id}`;
+        location.href = `./estimation.html?id=${j.id}`;
       }
     } catch { PS.toast(T().scan.netErr); render(); }
   }
