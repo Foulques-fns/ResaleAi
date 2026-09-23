@@ -14,15 +14,25 @@
 const API_BASE = (function () {
   const stored = localStorage.getItem("ps:api_base");
   if (stored) return stored;
-  // Détection automatique : si on est sur github.io, l'API est séparée
-  // Sur GitHub Pages, aucune API serveur n'est disponible localement.
-  // Une URL de backend peut être définie via localStorage (Paramètres)
-  // sans modifier le reste de l'application.
+  // Détection auto pour l'URL de preview de la plateforme
+  if (location.hostname.includes("e2b.app")) return "";
   return "";
 })();
 
-/* Wrapper fetch qui préfixe automatiquement les appels /api/ */
-const apiFetch = (path, init) => fetch(API_BASE + path, init);
+/* Wrapper fetch qui préfixe automatiquement les appels /api/ et gère les timeouts */
+const apiFetch = async (path, init = {}) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), init.timeout || 45000);
+  try {
+    const res = await fetch(API_BASE + path, {
+      ...init,
+      signal: controller.signal,
+    });
+    return res;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
 
 const PS = (() => {
   const DICTS = {
@@ -74,7 +84,7 @@ const PS = (() => {
         analyze: "Lancer l'estimation",
         describe: "Décrire l'objet manuellement",
         steps: ["Analyse des photos…", "Recherche d'annonces comparables sur le web…", "Calcul de la fourchette…", "Préparation des conseils…"],
-        netErr: "Le service d’estimation n’est pas connecté au serveur. Vérifiez l’URL du backend dans les paramètres.",
+        netErr: "Recherche web impossible : vérifiez votre connexion internet.",
         netProbe: "Connexion vérifiée en cours…",
         aiMissing: "La vision IA n'est pas configurée. Décrivez l'objet — le prix restera calculé sur de vraies annonces web.",
         hypTitle: "L'analyse hésite — confirmez l'objet",
@@ -254,7 +264,7 @@ const PS = (() => {
         analyze: "Run estimate",
         describe: "Describe the item manually",
         steps: ["Analyzing photos…", "Searching comparable listings on the web…", "Computing the range…", "Preparing selling advice…"],
-        netErr: "The estimation backend is not connected.",
+        netErr: "Web search failed: check your internet connection.",
         netProbe: "Checking connection…",
         aiMissing: "AI vision is not configured. Describe the item — the price will still be computed from real web listings.",
         hypTitle: "The analysis is unsure — confirm the item",
@@ -618,7 +628,7 @@ const PS = (() => {
   let deferredPrompt = null;
   function registerPWA() {
     if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -645,13 +655,13 @@ const PS = (() => {
       const b = document.createElement("button");
       b.className = "back-btn";
       b.innerHTML = `${ICONS.back} <span>${T.common.back}</span>`;
-      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "./index.html"));
+      b.onclick = () => (history.length > 1 ? history.back() : (location.href = "/index.html"));
       inner.appendChild(b);
     } else {
       const logo = document.createElement("a");
       logo.className = "logo";
-      logo.href = "./index.html";
-      logo.innerHTML = `<span class="logo-badge"><img src="./brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
+      logo.href = "/index.html";
+      logo.innerHTML = `<span class="logo-badge"><img src="/brand/resaleai-mark.svg" alt="ResaleAI"/></span><span class="logo-word"><span class="accent">Resale</span><span class="suffix">AI</span></span>`;
       inner.appendChild(logo);
     }
 
@@ -676,11 +686,11 @@ const PS = (() => {
     const nav = document.createElement("nav");
     nav.className = "tabbar";
     const tabs = [
-      ["home", "./index.html", ICONS.scan, T.nav.home],
-      ["scan", "./scan.html", ICONS.camera, T.nav.scan],
-      ["history", "./history.html", ICONS.history, T.nav.history],
-      ["alerts", "./alerts.html", ICONS.bell, T.nav.alerts],
-      ["settings", "./settings.html", ICONS.settings, T.nav.settings],
+      ["home", "/index.html", ICONS.scan, T.nav.home],
+      ["scan", "/scan.html", ICONS.camera, T.nav.scan],
+      ["history", "/history.html", ICONS.history, T.nav.history],
+      ["alerts", "/alerts.html", ICONS.bell, T.nav.alerts],
+      ["settings", "/settings.html", ICONS.settings, T.nav.settings],
     ];
     const grid = document.createElement("div");
     grid.className = "tabbar-grid";
